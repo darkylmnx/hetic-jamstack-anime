@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import constants from '~/constants';
+
 export default {
   name: 'PagePage',
   head() {
@@ -18,7 +20,7 @@ export default {
   },
   asyncData({ params }) {
     const page = params.page || 1;
-    return fetch(`http://localhost:1111/items/Trailers?meta=total_count&page=${page}&limit=12`)
+    return fetch(`${constants.URL}/items/Trailers?meta=total_count&page=${page}&limit=12`)
       .then(res => res.json())
       .then((data) => ({
         data,

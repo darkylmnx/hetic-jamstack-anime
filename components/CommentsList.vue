@@ -1,4 +1,6 @@
 <script>
+import constants from '~/constants';
+
 export default {
   props: {
     anime: {
@@ -22,7 +24,7 @@ export default {
       newComment.trailer = this.anime.id;
 
       this.isNewCommentLoading = true;
-      fetch('http://localhost:1111/items/Comments', {
+      fetch(`${constants.URL}/items/Comments`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -43,7 +45,7 @@ export default {
   },
   created() {
     this.isLoading = true;
-    fetch(`http://localhost:1111/items/Comments?sort[]=-date_created&filter[trailer][_eq]=${this.anime.id}`)
+    fetch(`${constants.URL}/items/Comments?sort[]=-date_created&filter[trailer][_eq]=${this.anime.id}`)
       .then((res) => res.json())
       .then((json) => (this.comments = json.data))
       .finally(() => (this.isLoading = false));

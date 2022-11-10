@@ -1,3 +1,4 @@
+import constants from './constants';
 import axios from 'axios';
 
 export default {
@@ -47,12 +48,12 @@ export default {
 
   generate: {
     async routes() {
-      const animeUrls = await axios.get('http://localhost:1111/items/Trailers')
+      const animeUrls = await axios.get(`${constants.URL}/items/Trailers`)
         .then((res) => res.data.data.map((anime) => {
           return `/anime/${anime.id}`
         }));
 
-      const pageUrls = await axios.get('http://localhost:1111/items/Trailers?aggregate[count]=*')
+      const pageUrls = await axios.get(`${constants.URL}/items/Trailers?aggregate[count]=*`)
         .then(res => {
           const total = Math.ceil(res.data.data[0].count / 12);
           const pages = [];

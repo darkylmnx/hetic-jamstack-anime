@@ -22,7 +22,7 @@
             </p>
             <p class="mt-2">{{ anime.published_at }}</p>
             <figure v-if="anime.image" class="image" style="width: 300px">
-              <img :src="`http://localhost:1111/assets/${anime.image}`" :alt="anime.title">
+              <img :src="`${constants.URL}/assets/${anime.image}`" :alt="anime.title">
             </figure>
             <div class="mt-2 has-text-weight-bold" v-html="anime.synopsis" />
             <figure v-if="ytCode" class="image mx-auto" style="width: 560px">
@@ -45,13 +45,15 @@
 </template>
 
 <script>
+import constants from '~/constants';
+
 export default {
   name: 'AnimePage',
   head() {
     const img = this.anime.image
     ? [ {
           name: 'og:image',
-          content: `http://localhost:1111/assets/${this.anime.image}`
+          content: `${constants.URL}/assets/${this.anime.image}`
         } ]
     : [];
 
@@ -62,6 +64,7 @@ export default {
       ]
     };
   },
+  data: () => ({ constants }),
   computed: {
     ytCode() {
       const url = this.anime.yt_url;
@@ -94,7 +97,7 @@ export default {
           trailer: this.anime.id,
         };
 
-        fetch('http://localhost:1111/items/Visits', {
+        fetch(`${constants.URL}/items/Visits`, {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
@@ -109,15 +112,15 @@ export default {
     },
   },
   async asyncData({ params }) {
-    const avgComments = await fetch(`http://localhost:1111/items/Comments?filter[trailer][_eq]=${params.id}&aggregate[avg]=rate`)
+    const avgComments = await fetch(`${constants.URL}/items/Comments?filter[trailer][_eq]=${params.id}&aggregate[avg]=rate`)
       .then((res) => res.json())
       .then((json) => json.data[0].avg.rate);
 
-    const nbVisits = await fetch(`http://localhost:1111/items/Visits?filter[trailer][_eq]=${params.id}&aggregate[count]=*`)
+    const nbVisits = await fetch(`${constants.URL}/items/Visits?filter[trailer][_eq]=${params.id}&aggregate[count]=*`)
       .then((res) => res.json())
       .then((json) => json.data[0].count);
 
-    const anime = await fetch('http://localhost:1111/items/Trailers/' + params.id)
+    const anime = await fetch(`${constants.URL}/items/Trailers/${params.id}`)
       .then(res => res.json())
       .then((json) => json.data);
 

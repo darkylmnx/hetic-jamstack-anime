@@ -8,10 +8,11 @@
 </template>
 
 <script>
+import constants from '~/constants';
 export default {
   name: 'IndexPage',
   asyncData() {
-    return fetch('http://localhost:1111/items/Trailers?meta=total_count&page=1&limit=12')
+    return fetch(`${constants.URL}/items/Trailers?meta=total_count&page=1&limit=12`)
       .then(res => res.json())
       .then((data) => ({
         data,
@@ -19,7 +20,7 @@ export default {
   },
   watch: {
     ['$route.query.s'](newVal) {
-      fetch(`http://localhost:1111/items/Trailers?meta=total_count&page=1&limit=12&search=${newVal}`)
+      fetch(`${constants.URL}/items/Trailers?meta=total_count&page=1&limit=12&search=${newVal}`)
       .then(res => res.json())
       .then((json) => (this.data = json));
     }
